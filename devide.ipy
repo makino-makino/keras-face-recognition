@@ -1,19 +1,29 @@
 import random
 import os
 
-names = ['human', 'murai']
-os.makedirs("divde/test", exist_ok=True)
+IN_ROOT_DIR = "./data/face"
+OUT_ROOT_DIR = "./data/devide"
 
-for name in names:
-    files = !ls ./data/cut/{name}
+MODEL_NUM = 100
+TEST_NUM = 100
+
+NAMES = ['human', 'murai']
+
+for name in NAMES:
+    in_dir = f"{IN_ROOT_DIR}/{name}"
+    out_dir = f"{OUT_ROOT_DIR}/{name}"
+
+    !mkdir -p {out_dir}/{{model,test}}
+
+    files = !ls {in_dir}
     random.shuffle(files)
     print(files)
 
-    a = files[:100]
-    b = files[100:200]
+    model_files = files[:MODEL_NUM]
+    test_files = files[MODEL_NUM : MODEL_NUM+TEST_NUM]
 
-    for f in a:
-        !cp ./data/cut/{name}/{f} ./data/divide/{name}/a/
+    for f in model_files:
+        !cp {in_dir}/{f} {out_dir}/model/
 
-    for f in b:
-        !cp ./data/cut/{name}/{f} ./data/divide/{name}/b/
+    for f in test_files:
+        !cp {in_dir}/{f} {out_dir}/test/
