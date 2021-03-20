@@ -43,6 +43,7 @@ api_model_client = ModelClientStub(channel_model_client)
 print("call gen_key")
 api_input_client.gen_key(NoParam())
 
+"""
 # call model_client to upload h5 file from modelfiles/h5/{model_name}.h5
 print("call load_and_compile_model_from_local_h5")
 model_info = ModelBinaryKeras()
@@ -51,6 +52,7 @@ model_info.weights = pickle.dumps(model.get_weights())
 model_info.type_info = 'sequential'
 model_info.intermediate_output = 'none'
 api_model_client.compile_model_from_binary_keras(model_info)
+"""
 
 
 murai_test_images = glob.glob(test_images_tmpl.format("murai"))
@@ -100,9 +102,9 @@ murai_test_count = len(murai_test_images)
 human_test_count = len(human_test_images)
 
 print(f"murai correct: {murai_correct} / {murai_test_count}")
-print(f"murai accuracy: {murai_correct / 60 * 100}%")
+print(f"murai accuracy: {murai_correct / murai_test_count * 100}%")
 print("murai score average:", np.mean(murai_score))
 print()
 print(f"human correct: {human_correct} / {human_test_count}")
-print(f"human accuracy: {human_correct / 100 * 100}%")
+print(f"human accuracy: {human_correct / human_test_count * 100}%")
 print("human score average:", np.mean(human_score))
