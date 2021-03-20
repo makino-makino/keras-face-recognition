@@ -25,7 +25,6 @@ test_images_tmpl = './data/divide/{}/b/*.jpg'
 murai_correct = 0
 murai_score = []
 
-"""
 host = "yahoo-hackathon-gateai-1.japaneast.cloudapp.azure.com"
 input_client_port = 5001
 model_client_port = 5002
@@ -52,7 +51,6 @@ model_info.weights = pickle.dumps(model.get_weights())
 model_info.type_info = 'sequential'
 model_info.intermediate_output = 'none'
 api_model_client.compile_model_from_binary_keras(model_info)
-"""
 
 
 murai_test_images = glob.glob(test_images_tmpl.format("murai"))
@@ -108,4 +106,3 @@ print()
 print(f"human correct: {human_correct} / {human_test_count}")
 print(f"human accuracy: {human_correct / 100 * 100}%")
 print("human score average:", np.mean(human_score))
-
