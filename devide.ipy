@@ -4,7 +4,7 @@ import os
 IN_ROOT_DIR = "./data/face"
 OUT_ROOT_DIR = "./data/devide"
 
-MODEL_NUM = 100
+MODEL_NUM = 130
 TEST_NUM = 100
 
 NAMES = ['human', 'murai']
