@@ -20,7 +20,7 @@ def main():
     X_train = []
     y_train = []
     for index, name in enumerate(names):
-        dir = "./data/divide/" + name + "/a"
+        dir = "./data/devide/" + name + "/model"
         files = glob.glob(dir + "/*.jpg")
         for i, file in enumerate(files[:TRAIN_NUM[name]]):
             image = Image.open(file)
@@ -36,7 +36,7 @@ def main():
     X_test = []
     y_test = []
     for index, name in enumerate(names):
-        dir = "./data/divide/" + name + "/b"
+        dir = "./data/divide/" + name + "/test"
         files = glob.glob(dir + "/*.jpg")
         for i, file in enumerate(files):
             image = Image.open(file)
