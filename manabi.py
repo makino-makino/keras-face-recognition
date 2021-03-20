@@ -10,7 +10,7 @@ from PIL import Image
 import glob
 
 
-TRAIN_NUM = 3000
+TRAIN_NUM = 75
 
 
 def main():
@@ -32,8 +32,6 @@ def main():
 
     X_train = np.array(X_train)
     y_train = np.array(y_train)
-
-    image_size = 50
 
     X_test = []
     y_test = []
