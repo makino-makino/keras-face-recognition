@@ -42,6 +42,16 @@ api_model_client = ModelClientStub(channel_model_client)
 print("call gen_key")
 api_input_client.gen_key(NoParam())
 
+# call model_client to upload h5 file from modelfiles/h5/{model_name}.h5
+print("call load_and_compile_model_from_local_h5")
+model_info = ModelBinaryKeras()
+model_info.config = pickle.dumps(model.get_config())
+model_info.weights = pickle.dumps(model.get_weights())
+model_info.type_info = 'sequential'
+model_info.intermediate_output = 'none'
+api_model_client.compile_model_from_binary_keras(model_info)
+
+
 def test(img_path):
     img = img_to_array(load_img(img_path, target_size=(50, 50)))
     img_nad = img_to_array(img)/255
