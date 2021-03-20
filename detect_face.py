@@ -5,16 +5,22 @@ import cv2
 from icecream import ic
 
 
-def main():
-    names = ['murai']
-    out_dir = "./data/out/"
-    os.makedirs(out_dir, exist_ok=True)
-    for i in range(len(names)):
+IN_DIR = "./data/in"
+OUT_DIR = "./data/face"
+NAMES = ['murai', 'japanese']
 
-        in_dir = "./data/in/"+names[i]+"/*.jpg"
+
+def main():
+    names = NAMES
+    out_dir = OUT_DIR
+    os.makedirs(out_dir, exist_ok=True)
+
+    for i in range(len(names)):
+        in_dir = f"{IN_DIR}/{names[i]}/*.jpg"
         in_jpg_files = glob.glob(in_dir)
-        os.makedirs(out_dir + names[i], exist_ok=True)
         ic(len(in_jpg_files))
+
+        os.makedirs(f"{out_dir}/{names[i]}", exist_ok=True)
         for num, jpg_file in enumerate(in_jpg_files):
             image = cv2.imread(jpg_file)
             if image is None:
@@ -31,19 +37,19 @@ def main():
             if len(face_list) < 1:
                 print("no face")
                 continue
-            
+
             for rect in face_list:
                 x, y, width, height = rect
                 image = image[rect[1]:rect[1] +
-                                rect[3], rect[0]:rect[0]+rect[2]]
+                              rect[3], rect[0]:rect[0]+rect[2]]
                 if image.shape[0] < 64:
                     continue
                 image = cv2.resize(image, (64, 64))
 
-                fileName = os.path.join(
-                    out_dir + names[i], str(num)+".jpg")
+                fileName = out_dir + f"/{names[i]}/" + str(num)+".jpg"
+                ic(fileName)
                 cv2.imwrite(str(fileName), image)
-                print(str(num)+".jpgを保存しました.")
+                ic(str(num)+".jpgを保存しました.")
 
             print(image.shape)
 

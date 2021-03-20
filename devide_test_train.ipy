@@ -1,0 +1,28 @@
+IN_DIR = "./data/face"
+OUT_DIR_TEST = "./data/test"
+OUT_DIR_TRAIN = "./data/train"
+NAMES = 'murai'
+
+
+def main():
+    # テスト用画像の出力先
+    !mkdir -p {OUT_DIR_TEST}
+    # 訓練用画像の出力先
+    !mkdir -p {OUT_DIR_TRAIN}
+    
+    ls_test = !ls -A {OUT_DIR_TEST} | wc -w
+    ls_train = !ls -A {OUT_DIR_TRAIN} | wc -w
+    if int(ls_test) + int(ls_train) > 0:
+        !echo "{OUT_DIR_TEST} and/or {OUT_DIR_TRAIN} is not empty"
+        exit(1)
+
+    for sub_dir in !ls $IN_DIR:
+        in_dir = !ls $IN_DIR | sed "s_^_$IN_DIR/_"/$dir
+        mkdir $OUT_DIR_TEST/$dir
+        find $in_dir | shuf | head - n $(python - c "print($(ls $in_dir | wc -w) // 5)") | xargs -I@ cp @ $OUT_DIR_TEST/$dir
+
+    cp -r $IN_DIR/* $OUT_DIR_TRAIN
+
+
+if __name__ == "__main__":
+    main()
