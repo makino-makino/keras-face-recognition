@@ -10,7 +10,7 @@ from PIL import Image
 import glob
 
 
-TRAIN_NUM = 75
+TRAIN_NUM = {'human': 63, 'murai': 63}
 
 
 def main():
@@ -22,7 +22,7 @@ def main():
     for index, name in enumerate(names):
         dir = "./data/divide/" + name + "/a"
         files = glob.glob(dir + "/*.jpg")
-        for i, file in enumerate(files[:TRAIN_NUM]):
+        for i, file in enumerate(files[:TRAIN_NUM[name]]):
             image = Image.open(file)
             image = image.convert("RGB")
             image = image.resize((image_size, image_size))
