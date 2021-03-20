@@ -1,0 +1,19 @@
+import random
+import os
+
+names = ['human', 'murai']
+os.makedirs("divde/test", exist_ok=True)
+
+for name in names:
+    files = !ls ./data/cut/{name}
+    random.shuffle(files)
+    print(files)
+
+    a = files[:100]
+    b = files[100:200]
+
+    for f in a:
+        !cp ./data/cut/{name}/{f} ./data/divide/{name}/a/
+
+    for f in b:
+        !cp ./data/cut/{name}/{f} ./data/divide/{name}/b/
