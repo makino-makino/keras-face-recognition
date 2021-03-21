@@ -10,7 +10,7 @@ from PIL import Image
 import glob
 
 
-TRAIN_NUM = {'human': 63, 'murai': 63}
+TRAIN_NUM = {'human': 200, 'murai': 130}
 
 
 def main():
@@ -91,17 +91,17 @@ def main():
     model = Sequential()
 
     model.add(Conv2D(filters=32, kernel_size=(3, 3),
-              strides=(1, 1), padding="same"))
+              strides=(1, 1), padding="same", use_bias=False, activation="relu"))
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(Conv2D(filters=32, kernel_size=(3, 3),
-                     strides=(1, 1), padding="same"))
+                     strides=(1, 1), padding="same", use_bias=False, activation="relu"))
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(Conv2D(filters=32, kernel_size=(3, 3),
-                     strides=(1, 1), padding="same"))
+                     strides=(1, 1), padding="same", use_bias=False, activation="relu"))
     model.add(MaxPooling2D(pool_size=(2, 2)))
     model.add(Flatten())
     model.add(Dense(256))
-    model.add(Activation("sigmoid"))
+    model.add(Activation("relu"))
     model.add(Dense(128))
     model.add(Activation('sigmoid'))
     # 分類したい人数を入れる

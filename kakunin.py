@@ -31,8 +31,15 @@ def test_client(test_data):
     input_client_port = 5001
     model_client_port = 5002
 
-
-    ## サーバ側
+    # サーバ側
+    # grpc stub to input_client
+    channel_input_client = grpc.insecure_channel(
+        f'{host}:{str(input_client_port)}', options=[])
+    api_input_client = InputClientStub(channel_input_client)
+    # call inpuot_client to generate keys
+    print("call gen_key")
+    # ここはうごく
+    api_input_client.gen_key(NoParam())
 
     # grpc stub to model_client
     channel_model_client = grpc.insecure_channel(
@@ -40,7 +47,6 @@ def test_client(test_data):
     api_model_client = ModelClientStub(channel_model_client)
 
     # モデルのアップロード+暗号化
-    # サーバが落ちてる？
     # call model_client to upload h5 file from modelfiles/h5/{model_name}.h5
     print("call load_and_compile_model_from_local_h5")
     model_info = ModelBinaryKeras()
@@ -49,21 +55,9 @@ def test_client(test_data):
     model_info.type_info = 'sequential'
     model_info.intermediate_output = 'none'
     # ここで止まる
-    #api_model_client.compile_model_from_binary_keras(model_info)
+    api_model_client.compile_model_from_binary_keras(model_info)
 
-
-    ## クライアント側
-
-    # grpc stub to input_client
-    channel_input_client = grpc.insecure_channel(
-        f'{host}:{str(input_client_port)}', options=[])
-    api_input_client = InputClientStub(channel_input_client)
-
-    # call inpuot_client to generate keys
-    print("call gen_key")
-    #ここはうごく
-    api_input_client.gen_key(NoParam())
-
+    # クライアント側
 
     data_for_cf = test_data.tolist()
     input_data = Tensor()
@@ -73,7 +67,8 @@ def test_client(test_data):
     # ここも止まる
     result = api_input_client.predict(input_data)
     result = pickle.loads(result.data)
-
+    print("cipher: ", result)
+    return result
 
 
 murai_test_images = glob.glob(test_images_tmpl.format("murai"))
@@ -131,10 +126,33 @@ print(f"human accuracy: {human_correct / human_test_count * 100}%")
 print("human score average:", np.mean(human_score))
 
 
+"""
 print("start client test")
-client_test_image = murai_test_images[0]
-img = img_to_array(load_img(client_test_image, target_size=(50, 50)))
-img_nad = img_to_array(img)/255
-img_nad = img_nad[None, ...]
-client_test_data = img_nad
-test_client(client_test_data)
+
+client_test_image = murai_test_images[1]
+for client_test_image in murai_test_images[:3]:
+    pred = model.predict(img_nad, batch_size=1, verbose=0)
+    print("raw:", pred)
+
+    print(client_test_image)
+    img = img_to_array(load_img(client_test_image, target_size=(50, 50)))
+    img_nad = img_to_array(img)/255
+    img_nad = img_nad[None, ...]
+    print(img_nad)
+    client_test_data = img_nad[0]
+    client_test_data = np.transpose(client_test_data, (2, 0, 1))
+    print(np.shape(client_test_data))
+    test_client(client_test_data)
+
+"""
+
+
+
+
+
+
+
+
+
+
+
